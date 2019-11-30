@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FlatList, Image, ImageBackground, SafeAreaView, Text, View } from 'react-native';
 
-import { styles } from './styles.js';
+import { styles, colors, sizes } from './styles.js';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { mockBannerData, mockUser } from '../../../configs/mocks'
@@ -11,7 +11,7 @@ class Home extends Component {
     header: (
       <View style={[styles.flex, styles.row, styles.header]}>
         <View>
-          <Text>Search for bistro</Text>
+          <Text style={[{color: colors.caption}, styles.text12]}>Search for bistro</Text>
           <Text style={{fontSize: 24}}>Area</Text>
         </View>
         <View>
@@ -23,20 +23,21 @@ class Home extends Component {
 
   renderPopulars = () => {
     return(
-      <FlatList 
-      horizontal 
-      pagingEnabled
-      scrollEnabled
-      showsHorizontalScrollIndicator={false}
-      scrollEventThrottl={16}
-      snapToAlignment='center'
-      style={[styles.flex, styles.row]}
-      data={mockBannerData}
-      keyExtractor={(item, index) => `${item.id}`}
-      renderItem={({item}) => this.renderPopularItem(item)}
-      >
-        {this.renderPopularItem()}
-      </FlatList>
+      <View style={[styles.column, styles.bannerContainer]}>
+        <FlatList 
+          horizontal 
+          pagingEnabled
+          scrollEnabled
+          showsHorizontalScrollIndicator={false}
+          scrollEventThrottl={16}
+          snapToAlignment='center'
+          style={[{overflow: 'visible'}]}
+          data={mockBannerData}
+          keyExtractor={(item, index) => `${item.id}`}
+          renderItem={({item}) => this.renderPopularItem(item)}
+          />
+        {this.renderPageControl()}
+      </View>
     )
   }
 
@@ -49,7 +50,7 @@ class Home extends Component {
         style={[styles.flex, styles.banner, styles.cardShadow]}
         imageStyle={{borderRadius: 12}}
         source={{uri: item.thumbnail}}>
-        <View style={[styles.flex, styles.row, {justifyContent: 'space-between'}]}>
+        <View style={[styles.row, {justifyContent: 'space-between'}]}>
           <View>
             <Image source={{uri: item.user.image}} style={styles.avatar}></Image>
           </View>
@@ -69,20 +70,37 @@ class Home extends Component {
     )
   }
 
+  renderPageControl() {
+    return (
+      <View style={[styles.flex, styles.row, {justifyContent: 'center'}, styles.pageControlMarginTop]}>
+          {mockBannerData.map(popularDestination => {
+            return (
+              <View key={popularDestination.id} style={[styles.pageControl, popularDestination.id === 1 ? styles.activePageControl : null]}>
+              
+              </View>
+            )
+        })}
+      </View>
+    )
+  }
+
   renderRecommendations = () => {
     return(
       <View style={[styles.flex, styles.column, styles.homeContent]}>
-        <Text>Recommended</Text>
+        <View style={[styles.row, {justifyContent: 'space-between'}]}>
+          <Text style={[styles.title18]}>Recommended</Text>
+          <Text style={[styles.text14, {color: colors.caption}]}>More</Text>
+        </View>
       </View>
     )
   }
 
   render() {
     return (
-      <View style={[styles.flex]}>
+      <ScrollView style={[styles.flex]}>
         {this.renderPopulars()}
         {this.renderRecommendations()}
-      </View>
+      </ScrollView>
     )
   }
 }

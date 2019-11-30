@@ -1,6 +1,22 @@
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet, Platform } from 'react-native';
 
 const { width, height } = Dimensions.get('screen');
+
+const colors = {
+  gray: '#DCE0E9',
+  darkGray: '#4B5058',
+  caption: '#BCCCD4',
+  active: '#007BFA',
+};
+
+const sizes = {
+  base: 16,
+  font: 14,
+  padding: 36,
+  margin: 36,
+  title: 24,
+  radius: 12,
+};
 
 const styles = StyleSheet.create({
   flex: {
@@ -22,14 +38,19 @@ const styles = StyleSheet.create({
   homeContent: {
     paddingHorizontal: 36
   },
+  bannerContainer: {
+    flex: 1,
+    justifyContent: 'space-between',
+    paddingBottom: 30
+  },
   banner: {
-    width: width - (36 * 2),
-    height: width * 0.6,
+    width: width - (sizes.margin * 2),
+    height: width - (sizes.margin * 2),
     borderRadius: 16,
     backgroundColor: 'pink',
     marginHorizontal: 36,
     padding: 36,
-    position: 'relative'
+    alignItems: 'center'
   },
   bannerCard: {
     position: 'absolute',
@@ -48,7 +69,11 @@ const styles = StyleSheet.create({
   },
   rating: {
     color: 'white',
-    fontSize: 24
+    fontSize: 24,
+    fontWeight: 'bold'
+  },
+  title18: {
+    fontSize: 18
   },
   title14: {
     fontSize: 14,
@@ -68,7 +93,22 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 4
+  },
+  pageControl: {
+    width: 10,
+    height: 10,
+    borderWidth: 1.5,
+    borderRadius: 5,
+    marginHorizontal: 6,
+    backgroundColor: colors.gray,
+    borderColor: 'transparent',
+  },
+  activePageControl: {
+    borderColor: colors.active
+  },
+  pageControlMarginTop: {
+    marginTop: 64
   }
 });
 
-export { styles };
+export { styles, colors, sizes };
