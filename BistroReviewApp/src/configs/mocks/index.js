@@ -9,6 +9,7 @@ const mockBannerData = [
     title: 'Momofuku',
     description: "Momofuku Las Vegas is Momofuku's first restaurant on the West Coast. Drawing influence from all over the world, including the United States, Korea and Japan, the menu features steamed buns, noodles, and meat and seafood meant for sharing.",
     rating: 4.7,
+    totalReview: 100,
     thumbnail: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=60',
     images: [
       'https://images.unsplash.com/photo-1551529834-525807d6b4f3?auto=format&fit=crop&w=800&q=60',
@@ -27,6 +28,7 @@ const mockBannerData = [
     title: '2100 Club',
     description: '2100 Club, the world’s first blockchain bar, designed by LYCS Architecture.The bar is initiated by Chen Weixing , founder of Funcity Captial and Kuadi (Chinese Uber), and participated by many well-known entrepreneurs and cornerstone investors in the Blockchain industry. The slogan of 2100Club shares the idea ‘to own, to live to live until 2100’ to all the new economic drivers and innovators. It has been further developed as the basis design concept of interior space which interpreting its intellectual spirit instead of creating a theme bar.',
     rating: 4.5,
+    totalReview: 100,
     thumbnail: 'https://images.unsplash.com/photo-1531973819741-e27a5ae2cc7b?auto=format&fit=crop&w=1650&q=80',
     images: [
       'https://images.unsplash.com/photo-1551529834-525807d6b4f3?auto=format&fit=crop&w=800&q=60',
