@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { FlatList, Image, ImageBackground, SafeAreaView, Text, View } from 'react-native';
+import { Animated, FlatList, Image, ImageBackground, SafeAreaView, ScrollView, Text, View } from 'react-native';
 
 import { styles, colors, sizes } from './styles.js';
-import { ScrollView } from 'react-native-gesture-handler';
 
 import { mockBannerData, mockUser, mockRecommendationData } from '../../../configs/mocks'
 
 class Home extends Component {
+  horizontalOffset = new Animated.Value(0);
+
   static navigationOptions = {
     header: (
       <View style={[styles.flex, styles.row, styles.header]}>
@@ -29,11 +30,13 @@ class Home extends Component {
           pagingEnabled
           scrollEnabled
           showsHorizontalScrollIndicator={false}
+          decelerationRate={0}
           scrollEventThrottl={16}
           snapToAlignment='center'
           style={[{overflow: 'visible'}]}
           data={mockBannerData}
           keyExtractor={(item, index) => `${item.id}`}
+          onScroll={Animated.event([{nativeEvent: {contentOffset: {x: this.horizontalOffset}}}])}
           renderItem={({item}) => this.renderPopularItem(item)}
           />
         {this.renderPageControl()}
@@ -71,13 +74,19 @@ class Home extends Component {
   }
 
   renderPageControl() {
+    const pageControlPos = Animated.divide(this.horizontalOffset, sizes.width);
     return (
       <View style={[styles.flex, styles.row, {justifyContent: 'center'}, styles.pageControlMarginTop]}>
-          {mockBannerData.map(popularDestination => {
+          {mockBannerData.map((popularDestination, index) => {
+            const borderWidth = pageControlPos.interpolate({
+              inputRange: [index-1, index, index + 1],
+              outputRange: [0, 1.5, 0],
+              extrapolate: 'clamp'
+            });
             return (
-              <View key={popularDestination.id} style={[styles.pageControl, popularDestination.id === 1 ? styles.activePageControl : null]}>
+              <Animated.View key={popularDestination.id} style={[styles.pageControl, styles.activePageControl, {borderWidth: borderWidth}]}>
               
-              </View>
+              </Animated.View>
             )
         })}
       </View>
@@ -86,7 +95,7 @@ class Home extends Component {
 
   renderRecommendations = () => {
     return(
-      <View style={[styles.flex, styles.column, styles.homeContent]}>
+      <View style={[styles.flex, styles.column, styles.homeContent, {marginBottom: 16}]}>
         <View style={[styles.row, {justifyContent: 'space-between'}]}>
           <Text style={[styles.title18]}>Recommended</Text>
           <Text style={[styles.text14, {color: colors.caption}]}>More</Text>
@@ -102,26 +111,26 @@ class Home extends Component {
             style={[{overflow: 'visible'}]}
             data={mockRecommendationData}
             keyExtractor={(item, index) => `${item.id}`}
-            renderItem={({item}) => this.renderRecommendationItem(item)}
+            renderItem={({item, index}) => this.renderRecommendationItem(item, index)}
           />
         </View>
       </View>
     )
   }
 
-  renderRecommendationItem(item) {
+  renderRecommendationItem(item, index) {
     return (
       <View style={[styles.column, {marginTop: 12, marginRight: 8, width: (sizes.width - (36 * 2)) / 2}]}>
         <View style={{flex: 1, overflow: 'hidden', borderTopLeftRadius: 12, borderTopRightRadius: 12, backgroundColor: 'white'}}>
           <Image
             style={[styles.recommendation, styles.cardShadow]}
-            imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
             source={{uri: item.thumbnail}}>
 
           </Image>
-          <View style={[styles.flex, styles.cardShadow, {marginBottom: 4, paddingHorizontal: 8, paddingVertical: 16, borderBottomLeftRadius: 12, borderBottomRightRadius: 12, backgroundColor: 'white', justifyContent: 'space-evenly'}]}>
+          <View style={[styles.flex, styles.cardShadow, {marginBottom: 4, paddingHorizontal: 8, paddingVertical: 16, borderBottomLeftRadius: 12, borderBottomRightRadius: 12, backgroundColor: 'white', justifyContent: 'space-evenly', marginHorizontal: 2}]}>
             <Text style={[styles.text14]}>{item.title}</Text>
             <Text style={[{color: colors.caption}]}>{item.location}</Text>
+            <Text style={[{color: colors.active}]}>{item.rating}</Text>
           </View>
         </View>
       </View>
@@ -130,7 +139,7 @@ class Home extends Component {
 
   render() {
     return (
-      <ScrollView style={[styles.flex]}>
+      <ScrollView showsVerticalScrollIndicator={false} style={[styles.flex]} contentContainerStyle={[{paddingBottom: 36}]}>
         {this.renderPopulars()}
         {this.renderRecommendations()}
       </ScrollView>
