@@ -74,8 +74,13 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold'
   },
+  title24: {
+    fontSize: 24,
+    fontWeight: 'bold'
+  },
   title18: {
-    fontSize: 18
+    fontSize: 18,
+    fontWeight: 'bold'
   },
   title14: {
     fontSize: 14,
@@ -117,6 +122,14 @@ const styles = StyleSheet.create({
   recommendation: {
     width: (width - (36 * 2)) / 2,
     height: (width - (36 * 2)) / 2
+  },
+  detailAvatar: {
+    position: 'absolute',
+    top: -32,
+    right: 36,
+    width: 64,
+    height: 64,
+    borderRadius: 32
   }
 });
 
