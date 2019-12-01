@@ -1,3 +1,4 @@
 import Home from './home';
+import Bistro from './bistro';
 
-export { Home }
+export { Bistro, Home }

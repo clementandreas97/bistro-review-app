@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Animated, FlatList, Image, ImageBackground, SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { Animated, FlatList, Image, ImageBackground, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { withNavigation } from 'react-navigation';
 
-import { styles, colors, sizes } from './styles.js';
+import { styles, colors, sizes } from '../../../common';
 import { mockBannerData, mockUser, mockRecommendationData } from '../../../configs/mocks'
 
 class Home extends Component {
@@ -49,34 +50,36 @@ class Home extends Component {
       return
     }
     return (
-      <ImageBackground
-        style={[styles.banner, styles.cardShadow]}
-        imageStyle={{borderRadius: 12}}
-        source={{uri: item.thumbnail}}>
-        <View style={[styles.row, {justifyContent: 'space-between'}]}>
-          <View>
-            <Image source={{uri: item.user.image}} style={styles.avatar}></Image>
-          </View>
-          <View style={[styles.flex, styles.column, {marginHorizontal: 16}]}>
-            <Text style={[{color: 'white'}, styles.title14]}>{item.user.name}</Text>
-            <View style={[styles.row, {alignItems: 'center'}]}>
-              <Icon name='map-marker' color='white' style={{marginRight: 4}}/>
-              <Text style={{color: 'white'}}>{item.location}</Text>
+      <TouchableOpacity onPress={() => this.props.navigation.navigate('Bistro', {bistro : item})}>
+        <ImageBackground
+          style={[styles.banner, styles.cardShadow]}
+          imageStyle={{borderRadius: 12}}
+          source={{uri: item.thumbnail}}>
+          <View style={[styles.row, {justifyContent: 'space-between'}]}>
+            <View>
+              <Image source={{uri: item.user.image}} style={styles.avatar}></Image>
+            </View>
+            <View style={[styles.flex, styles.column, {marginHorizontal: 16}]}>
+              <Text style={[{color: 'white'}, styles.title14]}>{item.user.name}</Text>
+              <View style={[styles.row, {alignItems: 'center'}]}>
+                <Icon name='map-marker' color='white' style={{marginRight: 4}}/>
+                <Text style={{color: 'white'}}>{item.location}</Text>
+              </View>
+            </View>
+            <View>
+              <Text style={styles.rating}>{item.rating}</Text>
             </View>
           </View>
-          <View>
-            <Text style={styles.rating}>{item.rating}</Text>
+          <View style={[styles.bannerCard, styles.cardShadow]}>
+            <Text style={[styles.title14, {marginBottom: 8}]}>{item.title}</Text>
+            <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'flex-end'}]}>
+              <Text style={[styles.text12, {color: 'grey'}]}>{item.description.split('').slice(0, 75)}</Text>
+              <Icon name='chevron-right' size={12} color='grey' style={{marginLeft: 4}}></Icon>
+            </View>
+            
           </View>
-        </View>
-        <View style={[styles.bannerCard, styles.cardShadow]}>
-          <Text style={[styles.title14, {marginBottom: 8}]}>{item.title}</Text>
-          <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'flex-end'}]}>
-            <Text style={[styles.text12, {color: 'grey'}]}>{item.description.split('').slice(0, 75)}</Text>
-            <Icon name='chevron-right' size={12} color='grey' style={{marginLeft: 4}}></Icon>
-          </View>
-          
-        </View>
-      </ImageBackground>  
+        </ImageBackground>  
+      </TouchableOpacity>
     )
   }
 
@@ -167,4 +170,4 @@ class Home extends Component {
   }
 }
 
-export default Home
+export default withNavigation(Home);
