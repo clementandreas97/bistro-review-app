@@ -105,7 +105,7 @@ class Bistro extends Component {
           <TouchableOpacity style={{marginTop: 16}} onPress={() => this.onTapExpand()}>
             <Text style={[styles.text14, {color: colors.caption, lineHeight: 28}]}>
               {this.state.isExpanded ? `${bistro.description}  ` : `${bistro.description.slice(0, 180)}...  `}
-              <Text style={[{color: colors.active}, styles.text14]}>Read more</Text>
+            <Text style={[{color: colors.active}, styles.text14]}>{this.state.isExpanded ? 'Hide' : 'Read more'}</Text>
             </Text>
           </TouchableOpacity>
         </View>
