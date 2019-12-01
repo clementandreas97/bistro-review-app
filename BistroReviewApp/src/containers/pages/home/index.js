@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Animated, FlatList, Image, ImageBackground, SafeAreaView, ScrollView, Text, View } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 import { styles, colors, sizes } from './styles.js';
-
 import { mockBannerData, mockUser, mockRecommendationData } from '../../../configs/mocks'
 
 class Home extends Component {
@@ -50,7 +50,7 @@ class Home extends Component {
     }
     return (
       <ImageBackground
-        style={[styles.flex, styles.banner, styles.cardShadow]}
+        style={[styles.banner, styles.cardShadow]}
         imageStyle={{borderRadius: 12}}
         source={{uri: item.thumbnail}}>
         <View style={[styles.row, {justifyContent: 'space-between'}]}>
@@ -59,7 +59,10 @@ class Home extends Component {
           </View>
           <View style={[styles.flex, styles.column, {marginHorizontal: 16}]}>
             <Text style={[{color: 'white'}, styles.title14]}>{item.user.name}</Text>
-            <Text style={{color: 'white'}}>{item.location}</Text>
+            <View style={[styles.row, {alignItems: 'center'}]}>
+              <Icon name='map-marker' color='white' style={{marginRight: 4}}/>
+              <Text style={{color: 'white'}}>{item.location}</Text>
+            </View>
           </View>
           <View>
             <Text style={styles.rating}>{item.rating}</Text>
@@ -67,7 +70,11 @@ class Home extends Component {
         </View>
         <View style={[styles.bannerCard, styles.cardShadow]}>
           <Text style={[styles.title14, {marginBottom: 8}]}>{item.title}</Text>
-          <Text style={[styles.text12, {color: 'grey'}]}>{item.description.split('').slice(0, 75)}</Text>
+          <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'flex-end'}]}>
+            <Text style={[styles.text12, {color: 'grey'}]}>{item.description.split('').slice(0, 75)}</Text>
+            <Icon name='chevron-right' size={12} color='grey' style={{marginLeft: 4}}></Icon>
+          </View>
+          
         </View>
       </ImageBackground>  
     )
@@ -76,7 +83,7 @@ class Home extends Component {
   renderPageControl() {
     const pageControlPos = Animated.divide(this.horizontalOffset, sizes.width);
     return (
-      <View style={[styles.flex, styles.row, {justifyContent: 'center'}, styles.pageControlMarginTop]}>
+      <View style={[styles.row, {justifyContent: 'center'}, styles.pageControlMarginTop]}>
           {mockBannerData.map((popularDestination, index) => {
             const borderWidth = pageControlPos.interpolate({
               inputRange: [index-1, index, index + 1],
@@ -129,11 +136,24 @@ class Home extends Component {
           </Image>
           <View style={[styles.flex, styles.cardShadow, {marginBottom: 4, paddingHorizontal: 8, paddingVertical: 16, borderBottomLeftRadius: 12, borderBottomRightRadius: 12, backgroundColor: 'white', justifyContent: 'space-evenly', marginHorizontal: 2}]}>
             <Text style={[styles.text14]}>{item.title}</Text>
-            <Text style={[{color: colors.caption}]}>{item.location}</Text>
-            <Text style={[{color: colors.active}]}>{item.rating}</Text>
+            <Text style={[styles.text12, {color: colors.caption}]}>{item.location}</Text>
+            <View style={[styles.row, {alignItems: 'center', justifyContent: 'space-between', marginTop: 4}]}>
+              {this.renderRatings(item.rating)}
+              <Text style={[{color: colors.active}]}>{item.rating}</Text>
+            </View>
           </View>
         </View>
       </View>
+    )
+  }
+
+  renderRatings(rating) {
+    const stars = new Array(5).fill(0);
+    return (
+      stars.map((val, idx) => {
+        const isFill = idx + 1 < rating
+        return <Icon name='star' key={idx} size ={12} color={colors[isFill ? 'active' : 'gray']}/>
+      })
     )
   }
 
