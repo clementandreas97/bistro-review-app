@@ -4,7 +4,7 @@ import { FlatList, Image, ImageBackground, SafeAreaView, Text, View } from 'reac
 import { styles, colors, sizes } from './styles.js';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import { mockBannerData, mockUser } from '../../../configs/mocks'
+import { mockBannerData, mockUser, mockRecommendationData } from '../../../configs/mocks'
 
 class Home extends Component {
   static navigationOptions = {
@@ -90,6 +90,39 @@ class Home extends Component {
         <View style={[styles.row, {justifyContent: 'space-between'}]}>
           <Text style={[styles.title18]}>Recommended</Text>
           <Text style={[styles.text14, {color: colors.caption}]}>More</Text>
+        </View>
+        <View style={[styles.column, styles.recommendedContainer]}>
+          <FlatList 
+            horizontal 
+            pagingEnabled
+            scrollEnabled
+            showsHorizontalScrollIndicator={false}
+            scrollEventThrottl={16}
+            snapToAlignment='end'
+            style={[{overflow: 'visible'}]}
+            data={mockRecommendationData}
+            keyExtractor={(item, index) => `${item.id}`}
+            renderItem={({item}) => this.renderRecommendationItem(item)}
+          />
+        </View>
+      </View>
+    )
+  }
+
+  renderRecommendationItem(item) {
+    return (
+      <View style={[styles.column, {marginTop: 12, marginRight: 8, width: (sizes.width - (36 * 2)) / 2}]}>
+        <View style={{flex: 1, overflow: 'hidden', borderTopLeftRadius: 12, borderTopRightRadius: 12, backgroundColor: 'white'}}>
+          <Image
+            style={[styles.recommendation, styles.cardShadow]}
+            imageStyle={{borderTopLeftRadius: 12, borderTopRightRadius: 12}}
+            source={{uri: item.thumbnail}}>
+
+          </Image>
+          <View style={[styles.flex, styles.cardShadow, {marginBottom: 4, paddingHorizontal: 8, paddingVertical: 16, borderBottomLeftRadius: 12, borderBottomRightRadius: 12, backgroundColor: 'white', justifyContent: 'space-evenly'}]}>
+            <Text style={[styles.text14]}>{item.title}</Text>
+            <Text style={[{color: colors.caption}]}>{item.location}</Text>
+          </View>
         </View>
       </View>
     )

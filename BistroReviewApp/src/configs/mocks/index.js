@@ -43,4 +43,35 @@ const mockUser = {
   image: 'https://m.media-amazon.com/images/M/MV5BOThhZTkxMWMtY2UyYS00MTdlLTk1ZmMtZWQ0OWFkZjE2YTA1XkEyXkFqcGdeQXVyMjU0ODI4MzY@._V1_UX172_CR0,0,172,256_AL_.jpg'
 }
 
-export { mockBannerData, mockUser }
+const mockRecommendationData = [
+  {
+    id: 1,
+    location: 'Denmark',
+    title: 'Admiraldage',
+    rating: 4.7,
+    thumbnail: 'https://images.unsplash.com/photo-1554679665-f5537f187268?auto=format&fit=crop&w=668&q=80'
+  },
+  {
+    id: 2,
+    location: 'Belfast',
+    title: 'National Grande Cafe',
+    rating: 4.5,
+    thumbnail: 'https://images.unsplash.com/photo-1526069631228-723c945bea6b?auto=format&fit=crop&w=668&q=80'
+  },
+  {
+    id: 3,
+    location: 'Bali',
+    title: 'Katamama Hotel',
+    rating: 4.5,
+    thumbnail: 'https://images.unsplash.com/photo-1541086095944-f4b5412d3666?auto=format&fit=crop&w=1100&q=80'
+  },
+  {
+    id: 4,
+    location: 'Denmark',
+    title: 'Copenhague',
+    rating: 4.5,
+    thumbnail: 'https://images.unsplash.com/photo-1569096651661-820d0de8b4ab?auto=format&fit=crop&w=626&q=80'
+  }
+]
+
+export { mockBannerData, mockUser, mockRecommendationData }

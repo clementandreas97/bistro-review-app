@@ -16,6 +16,8 @@ const sizes = {
   margin: 36,
   title: 24,
   radius: 12,
+  width: width,
+  height: height
 };
 
 const styles = StyleSheet.create({
@@ -108,6 +110,13 @@ const styles = StyleSheet.create({
   },
   pageControlMarginTop: {
     marginTop: 64
+  },
+  recommendedContainer: {
+
+  },
+  recommendation: {
+    width: (width - (36 * 2)) / 2,
+    height: (width - (36 * 2)) / 2
   }
 });
 
