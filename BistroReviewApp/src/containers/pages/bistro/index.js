@@ -1,16 +1,75 @@
 import React, { Component } from 'react';
-import { Animated, Image, ImageBackground, View, SafeAreaView, StatusBar, Text, TouchableOpacity } from 'react-native';
+import { Animated, Image, ImageBackground, View, SafeAreaView, ScrollView, StatusBar, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { withNavigation } from 'react-navigation';
+import { TabBar, TabView, SceneMap } from 'react-native-tab-view';
+import * as Reanimated from 'react-native-reanimated';
 
 import { mockUser } from '../../../configs/mocks';
 import { colors, sizes, styles } from '../../../common';
-import { ScrollView } from 'react-native-gesture-handler';
+
+const detailRoute = () => {
+  return (<View style={[styles.flex, {backgroundColor: 'pink'}]}></View>);
+}
+
+const photosRoute = () => {
+  return (<View style={[styles.flex, {backgroundColor: 'grey'}]}></View>);
+}
 
 class Bistro extends Component {
   horizontalOffset = new Animated.Value(0);
   state = {
-    isExpanded: false
+    isExpanded: false,
+    index: 0,
+    routes: [
+      { key: 'detail', title: 'Detail'},
+      { key: 'photos', title: 'Photos'},
+    ]
+  }
+
+  _renderTabBar = props => {
+    const inputRange = props.navigationState.routes.map((x, i) => i);
+    return (
+      <View style={styles.tabBar}>
+        {props.navigationState.routes.map((route, i) => {
+          const color = Reanimated.default.color(
+            Reanimated.default.round(
+              Reanimated.default.interpolate(props.position, {
+                inputRange,
+                outputRange: inputRange.map(inputIndex => 
+                  inputIndex == i ? 0 : 188
+                ),
+              })
+            ),
+            Reanimated.default.round(
+              Reanimated.default.interpolate(props.position, {
+                inputRange,
+                outputRange: inputRange.map(inputIndex => 
+                  inputIndex == i ? 125 : 204
+                ),
+              })
+            ),
+            Reanimated.default.round(
+              Reanimated.default.interpolate(props.position, {
+                inputRange,
+                outputRange: inputRange.map(inputIndex => 
+                  inputIndex == i ? 250 : 212
+                ),
+              })
+            )
+          );
+          return (
+            <TouchableOpacity 
+              key={`idx-${i}`}
+              style={[styles.flex, {padding: 16, alignItems: 'center'}]}
+              onPress={() => this.setState({index: i})}
+            >
+              <Reanimated.default.Text style={[{color}, styles.text14]}>{route.title}</Reanimated.default.Text>
+            </TouchableOpacity>
+          )
+        })}
+      </View>
+    )
   }
 
   onTapExpand() {
@@ -73,7 +132,7 @@ class Bistro extends Component {
     const { navigation } = this.props;
     const bistro = navigation.getParam('bistro');
     return (
-      <View style={[styles.flex, {backgroundColor: 'white'}]}>
+      <ScrollView style={[styles.flex, {backgroundColor: 'white'}]}>
         <StatusBar translucent backgroundColor='transparent' barStyle='light-content'></StatusBar>
         <View style={[styles.flex, {marginBottom: -8}]}>
           <ScrollView 
@@ -84,7 +143,7 @@ class Bistro extends Component {
             decelerationRate={0}
             scrollEventThrottle={16}
             snapToAlignment='center'
-            onScroll={Animated.event([{nativeEvent: {contentOffset: {x: this.horizontalOffset}}}])}
+            onScrollEndDrag={Animated.event([{nativeEvent: {contentOffset: {x: this.horizontalOffset}}}])}
             style={{}}>
             {
               bistro.images.map((img, idx) => {
@@ -108,8 +167,19 @@ class Bistro extends Component {
             <Text style={[{color: colors.active}, styles.text14]}>{this.state.isExpanded ? 'Hide' : 'Read more'}</Text>
             </Text>
           </TouchableOpacity>
+          <TabView
+            style={{marginTop: 16, backgroundColor: 'white'}}
+            navigationState={this.state}
+            renderTabBar={this._renderTabBar}
+            renderScene={SceneMap({
+              detail: detailRoute,
+              photos: photosRoute
+            })}
+            onIndexChange={index => this.setState({index})}
+            initialLayout={{width: sizes.width}}
+          />
         </View>
-      </View>
+      </ScrollView>
     )
   }
 }
